@@ -1,4 +1,3 @@
-// A pipe to check or convert document payloads for your controller
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 
@@ -13,7 +12,6 @@ export class MailerHealthCheckService {
       const testResult = await this.nodemailerService.verify();
       return Promise.resolve(!!testResult);
     } catch (error) {
-      // Handle or log the failure here
       return Promise.resolve(false);
     }
   }

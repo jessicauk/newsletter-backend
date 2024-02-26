@@ -12,7 +12,7 @@ import { RecipientService } from './recipient.service';
 import { Recipient } from './recipient.entity';
 import { Response } from 'express';
 
-@Controller('recipient')
+@Controller('api/recipient')
 export class RecipientController {
   constructor(private readonly recipientService: RecipientService) {}
 

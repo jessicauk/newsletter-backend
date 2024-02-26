@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { AppController } from './app.controller';
 import { typeOrmConfig } from './config/typeorm.config';
 import { AppService } from './app.service';
 import { UploadModule } from './upload/upload.module';
@@ -17,6 +18,10 @@ import { RecipientModule } from './recipient/recipient.module';
       imports: [ConfigModule],
       useFactory: async () => typeOrmConfig,
       inject: [ConfigService],
+      dataSourceFactory: async (options) => {
+        const dataSource = await new DataSource(options).initialize();
+        return dataSource;
+      },
     }),
     UploadModule,
     RecipientModule,
@@ -25,4 +30,6 @@ import { RecipientModule } from './recipient/recipient.module';
   providers: [AppService],
   exports: [TypeOrmModule],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private dataSource: DataSource) {}
+}

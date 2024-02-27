@@ -11,7 +11,7 @@ import { multerOptions } from './multer.config';
 import { DataLoadDto } from './upload.dto';
 import { EmailService } from '../email/email.service';
 
-@Controller('upload')
+@Controller('api/upload')
 export class UploadController {
   constructor(private readonly mailerService: EmailService) {}
   @Post('/upload-file')

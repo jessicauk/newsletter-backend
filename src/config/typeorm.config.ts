@@ -11,4 +11,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   database: process.env.DATABASE_NAME,
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   synchronize: process.env.TYPEORM_SYNC === 'true', // Caution: True only for dev mode
+  migrationsTableName: 'custom_migration_table',
+  migrations: ['dist/migrations/*{.ts,.js}'],
 };

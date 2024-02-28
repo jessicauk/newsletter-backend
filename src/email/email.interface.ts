@@ -7,3 +7,10 @@ export interface RequestEmail {
   text?: string;
   html: string;
 }
+
+export interface EmailData {
+  to: string;
+  subject: string;
+  text?: string;
+  html?: string;
+}

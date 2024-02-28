@@ -35,7 +35,21 @@ export class RecipientController {
   ) {
     try {
       const result = await this.recipientService.findOne(userId);
-      console.log('result', result);
+      return res.status(HttpStatus.OK).json(result);
+    } catch (error) {
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json({ message: error.message });
+    }
+  }
+
+  @Get('token/:unsubscribeToken')
+  async findOneByToken(
+    @Param('unsubscribeToken') unsubscribeToken: string,
+    @Res() res: Response,
+  ) {
+    try {
+      const result = await this.recipientService.findByToken(unsubscribeToken);
       return res.status(HttpStatus.OK).json(result);
     } catch (error) {
       return res

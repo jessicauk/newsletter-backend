@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { UploadController } from './upload.controller';
-import { EmailModule } from 'src/email/email.module';
+import { RecipientModule } from 'src/recipient/recipient.module';
 
 @Module({
-  imports: [EmailModule],
+  imports: [RecipientModule],
   controllers: [UploadController],
 })
 export class UploadModule {}

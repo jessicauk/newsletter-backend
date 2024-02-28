@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import { MailerHealthCheckService } from './mailer-check';
+import { EmailData } from './email.interface';
 
 @Injectable()
 export class EmailService {
@@ -20,17 +21,16 @@ export class EmailService {
   }
 
   async sendEmailWithAttachment(
-    dto: string,
+    data: EmailData,
     files: Array<Express.Multer.File>,
   ): Promise<void> {
-    const data = JSON.parse(dto);
     const { to, subject, text, html } = data;
 
     try {
       const mailerCheck = new MailerHealthCheckService(this.transporter);
       const isValid = await mailerCheck.verifyTransport();
 
-      if (isValid && dto) {
+      if (isValid && data) {
         const attachments = files.map((file) => ({
           filename: file?.originalname,
           content: file?.buffer,

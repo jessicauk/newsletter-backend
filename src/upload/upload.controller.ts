@@ -9,26 +9,36 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from './multer.config';
 import { DataLoadDto } from './upload.dto';
-import { EmailService } from '../email/email.service';
+import { RecipientService } from '../recipient/recipient.service';
 
 @Controller('api/upload')
 export class UploadController {
-  constructor(private readonly mailerService: EmailService) {}
+  constructor(private readonly recipientService: RecipientService) {}
   @Post('/upload-file')
   @UseInterceptors(FilesInterceptor('files', 5, multerOptions))
   async sendMail(
     @Body() body: DataLoadDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    const { data } = body;
-    const result = await this.mailerService.sendEmailWithAttachment(
-      data,
-      files,
-    );
-    return {
-      status: HttpStatus.OK,
-      message: 'Email sent successfully',
-      result,
-    };
+    try {
+      const { data } = body;
+      const { to: recipients, ...rest } = JSON.parse(data);
+      const result = await this.recipientService.sendRecipientEmail({
+        recipients,
+        data: rest,
+        files,
+      });
+
+      return {
+        status: HttpStatus.OK,
+        message: 'Email sent successfully',
+        result,
+      };
+    } catch (error) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: error.message,
+      };
+    }
   }
 }

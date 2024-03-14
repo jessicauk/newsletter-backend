@@ -13,4 +13,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   synchronize: process.env.TYPEORM_SYNC === 'true', // Caution: True only for dev mode
   migrationsTableName: 'custom_migration_table',
   migrations: ['dist/migrations/*{.ts,.js}'],
+  ssl: {
+    rejectUnauthorized: false,
+  },
 };
